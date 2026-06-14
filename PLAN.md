@@ -1,21 +1,23 @@
 # Bloginator Plan
 
-## Configuration
+## Specifying Configuration
 
 Users should have 2 methods of specifying config options:
 
 1. Command line flags
 	- Take precedence over config file options
-	- Ex: `bloginator -o build --verbose`
+	- Ex: `bloginator build -o ./build --verbose`
 
 2. Config file
 	- By default searched for at `./bloginator.toml`, but may be specified with the `-c <path>` flag
 	- Ex:
 
 ```toml
-output = "build"
+output_folder = "build"
 verbose = true
 ```
+
+Information about configuration options can be found in CONFIG.md
 
 ## File Strucure
 
@@ -31,14 +33,19 @@ verbose = true
 ## Todo
 
 - [ ] Basic functionality
- 	- [ ] Move index.html to output folder
- 	- [ ] Compile each post into html
- 	- [ ] Insert compiled html into the post template
- 	- [ ] Create a page for each post -> build/posts
- 	- [ ] Copy all files in assets to build/assets (if they don't already exist)
+	- [ ] Set up clap
+		- [ ] Create the build subcommand
+		- [ ] Create the -c and -v flags
+	- [ ] Move index.html to output folder
+	- [ ] Compile each post into html
+	- [ ] Insert compiled html into the post template
+	- [ ] Create a page for each post -> build/posts
+	- [ ] Copy all files in assets to build/assets (if they don't already exist)
 - [ ] Flesh out a little more
- 	- [ ] Store metadata alongside posts (title, time/date created, etc.)
- 	- [ ] index.html templates for creating a post list
+	- [ ] Store metadata alongside posts (title, time/date created, etc.)
+	- [ ] Create the create-post subcommand
+		- Initializes a new md post along with its metadata
+	- [ ] index.html templates for creating a post list
 - [ ] Even further
- 	- [ ] Minify created html files
- 	- [ ] Automatically minify asset files (only ones that are minifiable)
+	- [ ] Minify created html files
+	- [ ] Automatically minify asset files (only ones that are minifiable)
