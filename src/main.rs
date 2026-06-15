@@ -19,12 +19,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 		match fs::read_to_string(&cli.config) {
 			Ok(contents) => {
 				event!(Level::TRACE, "successfully read config file");
-				
+
 				let config: FileConfig = match toml::from_str(&contents) {
 					Ok(config) => {
 						event!(Level::TRACE, "successfully parsed config file");
 						config
-					},
+					}
 					Err(e) => {
 						event!(Level::DEBUG, "failed to parse config file: {e}");
 						event!(Level::INFO, "using default config file configuration");
@@ -33,9 +33,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 				};
 
 				config
-			},
+			}
 			Err(e) => {
-				event!(Level::DEBUG, config_file_location = cli.config.display().to_string(), "failed to read config file: {e}");
+				event!(
+					Level::DEBUG,
+					config_file_location = cli.config.display().to_string(),
+					"failed to read config file: {e}"
+				);
 				event!(Level::INFO, "using default config file configuration");
 				FileConfig::default()
 			}
@@ -49,16 +53,17 @@ fn main() -> Result<(), Box<dyn Error>> {
 		(true, false) => {
 			set_log_level(LogLevel::Verbose);
 			event!(Level::TRACE, "set log level to verbose due to config file");
-		},
+		}
 		(false, false) => {
 			set_log_level(LogLevel::Simple);
 			event!(Level::TRACE, "set log level to simple due to config file");
-		},
-		(_, _) => ()
+		}
+		(_, _) => (),
 	}
 
 	event!(Level::TRACE, "config ready: {config:?}");
 
+	// Cli command settings are excluded because config is the new source of truth
 	match cli.command {
 		Commands::Build { .. } => {
 			event!(Level::TRACE, "build command supplied");

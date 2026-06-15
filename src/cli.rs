@@ -23,6 +23,6 @@ pub enum Commands {
 	Build {
 		/// Determines the folder that the built website structure will be put into
 		#[arg(short, long, value_name = "DIRECTORY")]
-		output_folder: Option<PathBuf>
-	}
+		output_folder: Option<PathBuf>,
+	},
 }

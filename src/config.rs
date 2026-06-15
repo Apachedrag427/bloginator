@@ -4,7 +4,6 @@ use super::cli::{Cli, Commands};
 
 use serde_derive::Deserialize;
 
-
 // No config location is specified in FileConfig or Config because, at this point, the config file has already been either discovered or defaulted to all None
 #[derive(Deserialize, Default)]
 pub struct FileConfig {
@@ -14,7 +13,7 @@ pub struct FileConfig {
 
 #[derive(Deserialize, Default)]
 pub struct FileBuildConfig {
-	pub output_folder: Option<PathBuf>
+	pub output_folder: Option<PathBuf>,
 }
 
 impl FileConfig {
@@ -23,16 +22,23 @@ impl FileConfig {
 			// If either verbose is specified, then we're in verbose mode
 			verbose: self.verbose.unwrap_or(false) | options.verbose,
 			build_config: match &options.command {
-				Commands::Build { output_folder: Some(output_folder) } => BuildConfig { output_folder: output_folder.clone() },
+				Commands::Build {
+					output_folder: Some(output_folder),
+				} => BuildConfig {
+					output_folder: output_folder.clone(),
+				},
 				_ => match &self.build {
-					Some(FileBuildConfig { output_folder: Some(output_folder) }) => BuildConfig { output_folder: output_folder.clone() },
-					_ => BuildConfig::default()
-				}
-			}
+					Some(FileBuildConfig {
+						output_folder: Some(output_folder),
+					}) => BuildConfig {
+						output_folder: output_folder.clone(),
+					},
+					_ => BuildConfig::default(),
+				},
+			},
 		}
 	}
 }
-
 
 #[derive(Debug)]
 pub struct Config {
@@ -42,17 +48,16 @@ pub struct Config {
 
 #[derive(Debug)]
 pub struct BuildConfig {
-	pub output_folder: PathBuf
+	pub output_folder: PathBuf,
 }
 
 impl Default for BuildConfig {
 	fn default() -> Self {
 		BuildConfig {
-			output_folder: "./build".into()
+			output_folder: "./build".into(),
 		}
 	}
 }
-
 
 mod test {
 	use super::*;
@@ -60,7 +65,9 @@ mod test {
 	#[allow(unused)]
 	fn empty_cli() -> Cli {
 		Cli {
-			command: Commands::Build { output_folder: None },
+			command: Commands::Build {
+				output_folder: None,
+			},
 			config: "./bloginator.toml".into(),
 			verbose: false,
 		}
@@ -81,28 +88,38 @@ mod test {
 	fn fileconfig_unspecified() {
 		let empty_fileconfig = FileConfig::default();
 		let full_cli_options = Cli {
-			command: Commands::Build { output_folder: Some("./testbuild".into()) },
+			command: Commands::Build {
+				output_folder: Some("./testbuild".into()),
+			},
 			config: "./testconfig.toml".into(),
 			verbose: true,
 		};
 
 		let config = empty_fileconfig.overlay_cli_options(&full_cli_options);
 
-		assert_eq!(config.build_config.output_folder, PathBuf::from("./testbuild"));
+		assert_eq!(
+			config.build_config.output_folder,
+			PathBuf::from("./testbuild")
+		);
 		assert_eq!(config.verbose, true);
 	}
 
 	#[test]
 	fn cli_unspecified() {
 		let full_fileconfig = FileConfig {
-			build: Some(FileBuildConfig { output_folder: Some("./testbuild".into()) }),
+			build: Some(FileBuildConfig {
+				output_folder: Some("./testbuild".into()),
+			}),
 			verbose: Some(true),
 		};
 		let empty_cli_options = empty_cli();
 
 		let config = full_fileconfig.overlay_cli_options(&empty_cli_options);
 
-		assert_eq!(config.build_config.output_folder, PathBuf::from("./testbuild"));
+		assert_eq!(
+			config.build_config.output_folder,
+			PathBuf::from("./testbuild")
+		);
 		assert_eq!(config.verbose, true);
 	}
 
@@ -112,36 +129,50 @@ mod test {
 	#[test]
 	fn all_specified_v1() {
 		let full_fileconfig = FileConfig {
-			build: Some(FileBuildConfig { output_folder: Some("./testbuild1".into()) }),
+			build: Some(FileBuildConfig {
+				output_folder: Some("./testbuild1".into()),
+			}),
 			verbose: Some(false),
 		};
 		let full_cli_options = Cli {
-			command: Commands::Build { output_folder: Some("./testbuild2".into()) },
+			command: Commands::Build {
+				output_folder: Some("./testbuild2".into()),
+			},
 			config: "./testconfig.toml".into(),
 			verbose: true,
 		};
 
 		let config = full_fileconfig.overlay_cli_options(&full_cli_options);
 
-		assert_eq!(config.build_config.output_folder, PathBuf::from("./testbuild2"));
+		assert_eq!(
+			config.build_config.output_folder,
+			PathBuf::from("./testbuild2")
+		);
 		assert_eq!(config.verbose, true);
 	}
 
 	#[test]
 	fn all_specified_v2() {
 		let full_fileconfig = FileConfig {
-			build: Some(FileBuildConfig { output_folder: Some("./testbuild1".into()) }),
+			build: Some(FileBuildConfig {
+				output_folder: Some("./testbuild1".into()),
+			}),
 			verbose: Some(true),
 		};
 		let full_cli_options = Cli {
-			command: Commands::Build { output_folder: Some("./testbuild2".into()) },
+			command: Commands::Build {
+				output_folder: Some("./testbuild2".into()),
+			},
 			config: "./testconfig.toml".into(),
 			verbose: false,
 		};
 
 		let config = full_fileconfig.overlay_cli_options(&full_cli_options);
 
-		assert_eq!(config.build_config.output_folder, PathBuf::from("./testbuild2"));
+		assert_eq!(
+			config.build_config.output_folder,
+			PathBuf::from("./testbuild2")
+		);
 		assert_eq!(config.verbose, true);
 	}
 }
