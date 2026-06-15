@@ -1,5 +1,6 @@
 pub mod cli;
 pub mod config;
+pub mod fsutils;
 pub mod log;
 
 pub use cli::{Cli, Commands};

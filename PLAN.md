@@ -38,10 +38,10 @@ Information about configuration options can be found in CONFIG.md
 		- [x] Create the -c and -v flags
 	- [x] Integrate clap with config
 		- Clap should override config file options
-	- [ ] Move index.html to output folder
-	- [ ] Compile each post into html
-	- [ ] Insert compiled html into the post template
-	- [ ] Create a page for each post -> build/posts
+	- [x] Move index.html to output folder
+	- [x] Compile each post into html
+	- [x] Insert compiled html into the post template
+	- [x] Create a page for each post -> build/posts
 	- [ ] Copy all files in assets to build/assets (if they don't already exist)
 - [ ] Flesh out a little more
 	- [ ] Store metadata alongside posts (title, time/date created, etc.)
