@@ -33,9 +33,11 @@ Information about configuration options can be found in CONFIG.md
 ## Todo
 
 - [ ] Basic functionality
-	- [ ] Set up clap
-		- [ ] Create the build subcommand
-		- [ ] Create the -c and -v flags
+	- [x] Set up clap
+		- [x] Create the build subcommand
+		- [x] Create the -c and -v flags
+	- [x] Integrate clap with config
+		- Clap should override config file options
 	- [ ] Move index.html to output folder
 	- [ ] Compile each post into html
 	- [ ] Insert compiled html into the post template
